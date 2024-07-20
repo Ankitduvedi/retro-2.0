@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "804202975609",
+    "project_id": "robit-6eda0",
+    "storage_bucket": "robit-6eda0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804202975609:android:422fc8cab412a7704d9fa8",
+        "android_client_info": {
+          "package_name": "com.example.reso"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYGsaHQtcekSxLzwOPwjicVs_sj-uDdGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804202975609:android:fe8a57660dbcf2554d9fa8",
+        "android_client_info": {
+          "package_name": "com.resro.robit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYGsaHQtcekSxLzwOPwjicVs_sj-uDdGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
