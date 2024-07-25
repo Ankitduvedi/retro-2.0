@@ -1,74 +1,51 @@
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:reso/core/routes/go_router.dart';
 import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+final theme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    brightness: Brightness.light,
+    seedColor: const Color.fromARGB(255, 131, 57, 0),
+  ),
+  textTheme: GoogleFonts.latoTextTheme(),
+);
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  log('Handling a background message: ${message.messageId}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //AppInitializations().initializeFirebaseServices;
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends ConsumerStatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(),
+    // bool isDarkMode =
+    //     MediaQuery.of(context).platformBrightness == Brightness.dark;
+    // SystemChrome.setSystemUIOverlayStyle(MyAppThemes.systemUiOverlayStyle);
+    return MaterialApp.router(
+      themeMode: ThemeMode.light,
+      theme: ThemeData.light(),
+      debugShowCheckedModeBanner: false,
+      routerConfig: goRouter,
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var docs = 0;
-  Future<void> fetchDocumentCount() async {
-    try {
-      log("fetching");
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('names').get();
-      log('Total documents in "users" collection: ${querySnapshot.docs.length}');
-      setState(() {
-        docs = querySnapshot.docs.length;
-      });
-    } catch (e) {
-      print('Error fetching document count: $e');
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    fetchDocumentCount();
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: GestureDetector(
-        onTap: () => fetchDocumentCount,
-        child: Container(height: 100, width: 100, color: Colors.red, child: Text(docs.toString())),
-      ),
-    ));
   }
 }

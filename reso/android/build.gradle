@@ -1,7 +1,23 @@
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+}
+buildscript {
+    ext.kotlin_version = '1.9.21'
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.google.gms:google-services:4.3.3'
+        //classpath 'com.google.gms:google-services:4.3.3' // or the latest version
     }
 }
 
