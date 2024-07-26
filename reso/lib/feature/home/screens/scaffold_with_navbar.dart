@@ -24,7 +24,7 @@ class _ScaffoldWithNavBarState extends ConsumerState<ScaffoldWithNavBar>
       case 0:
         GoRouter.of(context).go('/');
       case 1:
-        GoRouter.of(context).go('/creatorScreen/:user');
+        GoRouter.of(context).go('/hotelScreen');
       case 2:
         GoRouter.of(context).go('/setupHotelScreen');
       case 3:

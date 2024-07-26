@@ -91,11 +91,9 @@ class UserModel {
       'phoneNumber': phoneNumber,
       'place': place,
       'isNewUser': isNewUser,
-
       'designation': designation,
       // Add the new field
       'isApproved': isApproved,
-
       'tourPage': tourPage
     };
   }
@@ -103,11 +101,11 @@ class UserModel {
   // If you have a factory constructor for creating an empty object, make sure to include the new field there as well
   factory UserModel.empty() {
     return UserModel(
-        isNewUser: false,
+        isNewUser: true,
         image: '',
-        about: '',
+        about: 'Hey everyone',
         name: '',
-        createdAt: '',
+        createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
         id: '',
         email: '',
         pushToken: '',

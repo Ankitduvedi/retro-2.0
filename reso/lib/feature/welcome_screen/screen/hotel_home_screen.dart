@@ -45,6 +45,12 @@ class HotelScreenState extends ConsumerState<HotelScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: ListTile(
+                      onTap: () {
+                        ref.read(selectedRestaurantProvider.notifier).state =
+                            restaurant;
+                        context.push(
+                            '/hotelScreen/hotelDetailsScreen/${restaurant.id}');
+                      },
                       contentPadding: const EdgeInsets.all(16.0),
                       leading: restaurant.image.isNotEmpty
                           ? ClipRRect(
@@ -83,7 +89,7 @@ class HotelScreenState extends ConsumerState<HotelScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
         onPressed: () {
-          context.push('/setupHotelScreen');
+          context.push('/hotelScreen/setupHotelScreen');
         },
         child: const Icon(
           Icons.group_add_rounded,
