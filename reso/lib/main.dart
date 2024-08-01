@@ -4,7 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:reso/core/routes/go_router.dart';
+import 'package:reso/core/secure_storage/hive_storage/restaurant_model.dart';
 import 'firebase_options.dart';
 
 final theme = ThemeData(
@@ -25,6 +28,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   //AppInitializations().initializeFirebaseServices;
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter(appDocumentDir.path);
+  Hive.registerAdapter(RestaurantAdapter());
+  await Hive.openBox<Restaurant>('restaurantBox');
   runApp(const ProviderScope(child: MyApp()));
 }
 

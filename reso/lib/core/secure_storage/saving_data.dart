@@ -24,12 +24,12 @@ class SecureStorage {
   }
 
   /// Saving userId
-  Future setUserId(String key, String id) async {
+  Future setRestaurantId(String key, String id) async {
     await storage.write(key: key, value: id);
   }
 
   /// Fetching userId
-  Future<String> getUserId(String key) async {
+  Future<String> getRestaurantId(String key) async {
     String value = await storage.read(key: key) ?? '';
     return value;
   }

@@ -2,13 +2,15 @@ import 'package:go_router/go_router.dart';
 import 'package:reso/core/routes/navigation_const.dart';
 import 'package:reso/feature/auth/screens/login_screen.dart';
 import 'package:reso/feature/home/screens/home_screen.dart';
-import 'package:reso/feature/home/screens/scaffold_with_navbar.dart';
+import 'package:reso/feature/home/screens/home_screen_navbar.dart';
+import 'package:reso/feature/hotel/screen/create_dish.dart';
+import 'package:reso/feature/hotel/screen/staff_home_screen.dart';
+import 'package:reso/feature/menu/screens/menu_home_screen.dart';
 import 'package:reso/feature/splas_screen/splash_view.dart';
-import 'package:reso/feature/welcome_screen/screen/appoint_staff_screen.dart';
-import 'package:reso/feature/welcome_screen/screen/hotel_home_screen.dart';
-import 'package:reso/feature/welcome_screen/screen/hotel_detail_screen.dart';
-import 'package:reso/feature/welcome_screen/screen/setup_hotel.dart';
-import 'package:reso/feature/welcome_screen/screen/welcome_screen.dart';
+import 'package:reso/feature/hotel/screen/appoint_staff_screen.dart';
+import 'package:reso/feature/hotel/screen/hotel_detail_screen.dart';
+import 'package:reso/feature/hotel/screen/setup_hotel.dart';
+import 'package:reso/feature/hotel/screen/welcome_screen.dart';
 
 final goRouter = GoRouter(
   debugLogDiagnostics: true,
@@ -24,17 +26,18 @@ final goRouter = GoRouter(
     //   builder: (context, state) => const UpdateAppScreen(),
     // ),
     GoRoute(
-      path: '/loginScreen',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
       path: '/welcomeScreen',
       builder: (context, state) => const WelcomeScreen(),
     ),
-    // GoRoute(
-    //   path: '/setupHotelScreen',
-    //   builder: (context, state) => const SetupHotelScreen(),
-    // ),
+    GoRoute(
+      path: '/loginScreen',
+      builder: (context, state) => const LoginScreen(),
+    ),
+
+    GoRoute(
+      path: '/setupHotelScreen',
+      builder: (context, state) => const SetupHotelScreen(),
+    ),
 
     GoRoute(
       path: '/appointStaffScreen',
@@ -76,21 +79,32 @@ final goRouter = GoRouter(
             builder: (context, state) => const HomeScreen(),
           ),
           GoRoute(
-            path: '/hotelScreen',
+            path: '/staff',
             builder: (context, state) {
-              return const HotelScreen();
+              return const StaffHomeScreen();
             },
             routes: [
-              GoRoute(
-                path: 'setupHotelScreen',
-                builder: (context, state) => const SetupHotelScreen(),
-              ),
+              // GoRoute(
+              //   path: 'setupHotelScreen',
+              //   builder: (context, state) => const SetupHotelScreen(),
+              // ),
               GoRoute(
                 path: 'hotelDetailsScreen/:id',
                 builder: (context, state) => HotelDetailsScreen(
                     restaurantId: state.pathParameters['id']!),
               ),
+              GoRoute(
+                path: 'createMenuScreen/:restaurantId',
+                builder: (context, state) {
+                  final restaurantId = state.pathParameters['restaurantId']!;
+                  return CreateMenuScreen(restaurantId: restaurantId);
+                },
+              ),
             ],
+          ),
+          GoRoute(
+            path: '/menu',
+            builder: (context, state) => MenuScreen(),
           ),
 
           GoRoute(

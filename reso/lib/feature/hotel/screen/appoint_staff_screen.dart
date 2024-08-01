@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reso/feature/welcome_screen/controller/restaurant_controller.dart';
+import 'package:reso/feature/hotel/controller/restaurant_controller.dart';
 
 class AppointStaffScreen extends ConsumerStatefulWidget {
   const AppointStaffScreen({super.key});

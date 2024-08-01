@@ -1,14 +1,20 @@
 // lib/data/repositories/restaurant_repository.dart
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:reso/data/model/resturant_model.dart';
+import 'package:reso/core/secure_storage/hive_storage/restaurant_model.dart';
+import 'package:reso/data/model/dish_model.dart';
+
 import 'package:reso/data/model/user_model.dart';
 
 class RestaurantRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Stream<List<Restaurant>> getRestaurantsByOwnerId(String ownerId) {
     return _firestore
@@ -17,6 +23,16 @@ class RestaurantRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => Restaurant.fromJson(doc.data()))
+            .toList());
+  }
+
+  Stream<List<UserModel>> getStaffByRestaurantId(String restaurantId) {
+    return _firestore
+        .collection('users')
+        .where('place', isEqualTo: restaurantId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => UserModel.fromJson(doc.data()))
             .toList());
   }
 
@@ -66,6 +82,30 @@ class RestaurantRepository {
 
       // Re-authenticate with the original user's credential
       await _auth.signInWithCredential(credential);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<String>> uploadImages(List<File> images) async {
+    List<String> imageUrls = [];
+    for (var image in images) {
+      Reference ref =
+          _storage.ref().child('dish_images/${image.path.split('/').last}');
+      UploadTask uploadTask = ref.putFile(image);
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      imageUrls.add(downloadUrl);
+    }
+    return imageUrls;
+  }
+
+  Future<void> createDish(Dish dish, String restaurantId) async {
+    try {
+      final docRef =
+          _firestore.collection('restaurant/$restaurantId/dishes').doc();
+      dish.id = docRef.id;
+      await docRef.set(dish.toJson());
     } catch (e) {
       rethrow;
     }

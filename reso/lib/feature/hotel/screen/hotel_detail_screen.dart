@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reso/feature/welcome_screen/controller/restaurant_controller.dart';
+import 'package:reso/feature/hotel/controller/restaurant_controller.dart';
 
 class HotelDetailsScreen extends ConsumerWidget {
   final String restaurantId;
@@ -12,7 +12,7 @@ class HotelDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final restaurant = ref.watch(selectedRestaurantProvider.notifier).state;
+    final restaurant = ref.watch(selectedRestaurantProvid.notifier).state;
     if (restaurant == null) {
       return Scaffold(
         appBar: AppBar(
@@ -34,6 +34,7 @@ class HotelDetailsScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 // Navigate to Create Menu Screen
+                context.go('/hotelScreen/createMenuScreen/$restaurantId');
               },
               child: const Text('Create Menu'),
             ),

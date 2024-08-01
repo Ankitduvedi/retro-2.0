@@ -55,7 +55,7 @@ class AuthController extends StateNotifier<bool> {
     final response = await _authRepository.signout();
     state = false;
     response.fold((l) => Utils.snackBar(l.message, context), (r) {
-      context.pushReplacement('/loginScreen');
+      context.pushReplacement('/welcomeScreen');
       null;
     });
   }

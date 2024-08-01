@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:reso/data/model/resturant_model.dart';
+import 'package:reso/core/secure_storage/hive_storage/restaurant_model.dart';
 import 'package:reso/providers/user_data_provider.dart';
 
 class SetupHotelScreen extends ConsumerStatefulWidget {
@@ -23,7 +23,16 @@ class _SetupHotelScreenState extends ConsumerState<SetupHotelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Setup Your Hotel'),
+        title: Text(
+          'Setup Your Hotel',
+          style: GoogleFonts.ptSans(
+            textStyle: const TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -36,17 +45,6 @@ class _SetupHotelScreenState extends ConsumerState<SetupHotelScreen> {
             Center(
               child: Column(
                 children: [
-                  Text(
-                    'Setup Your Hotel',
-                    style: GoogleFonts.ptSans(
-                      textStyle: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
                   Text(
                     'We are glad to have you here.',
                     style: GoogleFonts.ptSans(
@@ -175,11 +173,15 @@ class _SetupHotelScreenState extends ConsumerState<SetupHotelScreen> {
     FirebaseFirestore.instance
         .collection('restaurant')
         .doc(restaurant.id)
-        .set(restaurant.toJson());
-    final userdata = ref.watch(userDataProvider).userData!;
-    userdata.isNewUser = false;
-    ref.watch(userDataProvider).updateUserData(userdata);
-    // Navigate to owner screen
-    context.push('/');
+        .set(restaurant.toJson())
+        .then(
+      (value) {
+        context.push('/');
+      },
+    );
+    // final userdata = ref.watch(userDataProvider).userData!;
+    // userdata.isNewUser = false;
+    // ref.watch(userDataProvider).updateUserData(userdata);
+    // // Navigate to owner screen
   }
 }
